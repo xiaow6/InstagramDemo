@@ -125,4 +125,5 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 LOGIN_REDIRECT_URL= 'posts'
 LOGOUT_REDIRECT_URL= 'posts'
 
+# this is a not friendly syntax, replace admin, form.py and signup form
 AUTH_USER_MODEL = "Insta.InstaUser"

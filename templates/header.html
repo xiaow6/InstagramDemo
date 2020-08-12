@@ -1,0 +1,27 @@
+<header>
+    <div>
+        <a href="/">Jiuzhang Insta</a>
+    </div>
+    <div>
+        <ul>
+            {% if request.user.is_authenticated %}
+                <li>
+                    <p>Hi, {{request.user.username}}</p>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">Logout</a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{% url 'login' %}">Login</a>
+                </li>
+                <li>
+                    <a href="{% url 'signup' %}">Signup</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</header>
+
+{% block content %}
+{% endblock content%}
