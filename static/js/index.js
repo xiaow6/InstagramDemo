@@ -105,14 +105,14 @@ function comment_update_view(data) {
     $post.closest('.view-update').find('.comment-list').append(commentHTML);
   }
   
-  $('.add-comment').on('keyup', function(e) {
-    if (enterPressed(e)) {
-      if (validComment($(this).val())) {
-        create_comment.call(this, comment_update_view, error_cb);
-        $(this).val('');
-      }
-    }
-  });
+  // $('.add-comment').on('keyup', function(e) {
+  //   if (enterPressed(e)) {
+  //     if (validComment($(this).val())) {
+  //       create_comment.call(this, comment_update_view, error_cb);
+  //       $(this).val('');
+  //     }
+  //   }
+  // });
   
 
 /*
@@ -162,10 +162,10 @@ function update_unfollow_view(data) {
 }
 
 
-$('.follow-toggle__container').on('click', '.follow-user', function() {
-    follow_user.call(this, update_follow_view, error_cb, 'follow');
-});
+// $('.follow-toggle__container').on('click', '.follow-user', function() {
+//     follow_user.call(this, update_follow_view, error_cb, 'follow');
+// });
 
-$('.follow-toggle__container').on('click', '.unfollow-user', function() {
-    follow_user.call(this, update_unfollow_view, error_cb, 'unfollow');
-});
+// $('.follow-toggle__container').on('click', '.unfollow-user', function() {
+//     follow_user.call(this, update_unfollow_view, error_cb, 'unfollow');
+// });

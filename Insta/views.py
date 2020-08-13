@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from Insta.models import Post, Like
+from Insta.models import Post, Like, InstaUser, UserConnection
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -16,9 +16,22 @@ class PostListView(ListView):
     model = Post
     template_name = 'index.html'
 
+    def get_queryset(self):
+        current_user = self.request.user
+        following = set()
+        for conn in UserConnection.objects.filter(creator=current_user).select_related('following'):
+            following.add(conn.following)
+        return Post.objects.filter(author__in=following)
+    
+
 class PostDetailView(LoginRequiredMixin ,DetailView):
     model = Post
     template_name = 'post_detail.html'
+    login_url = "login"
+
+class UserDetailView(LoginRequiredMixin ,DetailView):
+    model = InstaUser
+    template_name = 'user_detail.html'
     login_url = "login"
 
 class PostCreateView(LoginRequiredMixin, CreateView):
