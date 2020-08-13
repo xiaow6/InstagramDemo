@@ -4,7 +4,22 @@ from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+class InstaUser(AbstractUser):
+    profile_pic = ProcessedImageField(
+        upload_to='static/images/posts',
+        format='JPEG',
+        options={'quality':100},
+        blank=True,
+        null=True
+    )
+    
+
 class Post(models.Model):
+    author = models.ForeignKey(
+        InstaUser,
+        on_delete = models.CASCADE,
+        related_name="my_posts"
+    )
     title = models.TextField(blank=True, null=True)
     image = ProcessedImageField(
         upload_to='static/images/posts',
@@ -13,7 +28,9 @@ class Post(models.Model):
         blank=True,
         null=True
     )
-
+    def get_like_count(self):
+        return self.likes.count()
+        
     def get_absolute_url(self):
         return reverse("post_detail", args=[str(self.id)])
 
@@ -27,12 +44,23 @@ class Post2(models.Model):
         null=True
     )
 
-class InstaUser(AbstractUser):
-    profile_pic = ProcessedImageField(
-        upload_to='static/images/posts',
-        format='JPEG',
-        options={'quality':100},
-        blank=True,
-        null=True
+
+class Like(models.Model):
+    post = models.ForeignKey(
+        # ForeignKey 链接的是Post， on_delete是删除的时候一起删除，wangxiao like post1, post1 删除，所有喜欢的一起删除
+        # likes 是指Like类下，所有的like都可以通过Like.likes调用
+        Post,
+        on_delete=models.CASCADE,
+        related_name='likes'
     )
+    user = models.ForeignKey(
+        InstaUser,
+        on_delete=models.CASCADE,
+        related_name="likes"
+    )
+    class Meta:
+        unique_together = ("post", "user")
+
+    def __str__(self):
+        return "Like: " + self.user.username + " likes " + self.post.title
     
